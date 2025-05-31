@@ -18,3 +18,48 @@
 (define-data-var donation-percentage uint u20)
 (define-data-var total-donations uint u0)
 (define-data-var paused bool false)
+
+
+;; NFT data maps
+(define-map nft-owners uint principal)
+(define-map token-uri uint (string-utf8 256))
+(define-map nft-price uint uint)
+(define-map nft-metadata 
+    uint 
+    {creator: principal, 
+     timestamp: uint, 
+     category: (string-utf8 64)}
+)
+
+;; Charity campaign data
+(define-map charity-campaigns 
+    uint 
+    {name: (string-utf8 64),
+     description: (string-utf8 256),
+     goal: uint,
+     raised: uint,
+     deadline: uint,
+     active: bool}
+)
+
+(define-data-var campaign-counter uint u0)
+
+(define-map campaign-nfts uint (list 100 uint))
+(define-map user-campaign-participation 
+    {user: principal, campaign-id: uint}
+    {nfts-donated: (list 100 uint), total-value: uint}
+)
+(define-map campaign-milestones
+    {campaign-id: uint, milestone-id: uint}
+    {description: (string-utf8 256), 
+     target-amount: uint,
+     reached: bool,
+     reward-uri: (string-utf8 256)}
+)
+(define-map user-rewards principal (list 100 uint))
+
+;; Donation history
+(define-map user-donations 
+    {user: principal, campaign-id: uint} 
+    {amount: uint, timestamp: uint}
+)
